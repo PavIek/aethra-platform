@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package aethra.v1;
+
+option go_package = "github.com/PavIek/aethra-platform/api/v1/proto/gen/go/aethra/v1;aethrav1";
+
+import "google/protobuf/timestamp.proto";
+
+service IngestService {
+    rpc Ingest(IngestRequest) returns (IngestResponse);
+    rpc IngestStream(stream IngestRequest) returns (IngestResponse);
+}
+
+message IngestRequest {
+    string event_id = 1;
+    string event_type = 2;
+    google.protobuf.Timestamp occurred_at = 3;
+    string payload = 4;
+    Context context = 5;
+    Identity identity = 6;
+}
+
+message IngestResponse {
+    bool success = 1;
+    string error_message = 2;
+    google.protobuf.Timestamp received_at = 3;
+    string server_event_id = 4;
+}
+
+message Context {
+    string user_agent = 1;
+    string ip_address = 2;
+    string url = 3;
+    string referrer = 4;
+    string device_type = 5;
+    string os = 6;
+    string browser = 7;
+    string screen_resolution = 8;
+    string language = 9;
+    string timezone = 10;
+}
+
+message Identity {
+    string user_id = 1;
+    string session_id = 2;
+    string device_id = 3;
+    string anonymous_id = 4;
+}
